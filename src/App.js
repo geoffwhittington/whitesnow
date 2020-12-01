@@ -5,7 +5,7 @@ import './App.css';
 
 function App() {
   return (
-     <Router basename="/whitesnow">
+     <Router basename={`${process.env.REACT_APP_DEPLOY_CONTEXT}`}>
 	  <Route path="/" exact component={Search} />
      </Router>
   );
