@@ -164,7 +164,7 @@ export default function Search(props){
                     <ListItemAvatar>
                         <PlayCircleOutlineIcon />
                     </ListItemAvatar>
-                    <ListItemText primary={<a href={item.url}>{item.title}</a>} />
+                    <ListItemText primary={<a href={`https://${item.url}`}>{item.title}</a>} />
                     { feedbackToken && (
                         <>
                         <ThumbUp search={searchText} title={item.title} url={item.url}/>
@@ -188,7 +188,7 @@ export default function Search(props){
                     <ListItemAvatar>
                         <FormatAlignJustifyIcon />
                     </ListItemAvatar>
-                    <ListItemText primary={<a href={item.url}>{item.title}</a>}/>
+                    <ListItemText primary={<a href={`https://${item.url}`}>{item.title}</a>}/>
                     { feedbackToken && (
                         <>
                         <ThumbUp search={searchText} title={item.title} url={item.url}/>
