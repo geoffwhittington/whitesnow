@@ -5,7 +5,7 @@ import './App.css';
 
 function App() {
   return (
-     <Router basename="/docs">
+     <Router basename="/whitesnow">
 	  <Route path="/" exact component={Search} />
      </Router>
   );
