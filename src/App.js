@@ -5,7 +5,7 @@ import './App.css';
 
 function App() {
   return (
-     <Router>
+     <Router basename="/docs">
 	  <Route path="/" exact component={Search} />
      </Router>
   );
