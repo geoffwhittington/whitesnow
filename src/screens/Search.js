@@ -18,6 +18,7 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
+import ScrollDialog from "./dialog";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,7 +41,10 @@ export default function Search(props){
   const [trainingResults, setTrainingResults] = useState([]);
   const [taskResults, setTaskResults] = useState([]);
   const [howToResults, setHowToResults] = useState([]);
-	
+  const [dialogText, setDialogText] = useState("");
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogTitle, setDialogTitle] = useState("");
+
   const handleOnSubmit = (e) => {
       setSearchText(searchText.trim())
       e.preventDefault();
@@ -80,6 +84,9 @@ export default function Search(props){
     }
   }
 
+  const handleClose = () => { 
+      setDialogOpen(false);
+  }
   const ThumbUp = ((props) => {
       return (
           <IconButton 
@@ -124,6 +131,7 @@ export default function Search(props){
   }
     return (
 	    <div className={classes.root}>
+	    <ScrollDialog title={dialogTitle} text={dialogText} open={dialogOpen} handleClose={handleClose}/>
             <Grid container spacing={3}>
             <Grid item xs={12}>
                 <TextField label={"https://sde.example.com"} onChange={onServerChange} value={serverName} />
@@ -164,7 +172,7 @@ export default function Search(props){
                     <ListItemAvatar>
                         <PlayCircleOutlineIcon />
                     </ListItemAvatar>
-                    <ListItemText primary={<a href={`https://${item.url}`}>{item.title}</a>} />
+                    <ListItemText primary={<a href={`${item.url}`}>{item.title}</a>} />
                     { feedbackToken && (
                         <>
                         <ThumbUp search={searchText} title={item.title} url={item.url}/>
@@ -184,11 +192,11 @@ export default function Search(props){
                  }
                  >
                 {howToResults.map((item) => (
-                  <ListItem>
+                  <ListItem style={{cursor: 'pointer'}} onClick={() => {setDialogOpen(true); setDialogText(item.text); setDialogTitle(item.title)}}>
                     <ListItemAvatar>
                         <FormatAlignJustifyIcon />
                     </ListItemAvatar>
-                    <ListItemText primary={<a href={`https://${item.url}`}>{item.title}</a>}/>
+                    <ListItemText primary={item.title}/>
                     { feedbackToken && (
                         <>
                         <ThumbUp search={searchText} title={item.title} url={item.url}/>
