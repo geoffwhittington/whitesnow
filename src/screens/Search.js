@@ -148,7 +148,7 @@ export default function Search(props){
                  }
                  >
                 {trainingResults.map((item) => (
-                  <ListItem>
+                  <ListItem key={`trainingItem${item.id}`}>
                     <ListItemAvatar>
                         <PlayCircleOutlineIcon />
                     </ListItemAvatar>
@@ -169,13 +169,13 @@ export default function Search(props){
                  }
                  >
                 {howToResults.map((item) => (
-                  <ListItem style={{cursor: 'pointer'}}>
+                  <ListItem key={`howtoItem${item.id}`} style={{cursor: 'pointer'}}>
                     <ListItemAvatar>
                         <FormatAlignJustifyIcon />
                     </ListItemAvatar>
                     <ListItemText primary={item.title} onClick={() => {setDialogOpen(true); setDialogText(item.text); setDialogTitle(item.title)}} />
                     { feedbackToken && (
-			<HoverRating key={`howto${item.id}`} search={searchText} title={item.title} url={item.url} onRating={onRating}/>
+			<HoverRating key={`howtoRating${item.id}`} search={searchText} title={item.title} url={item.url} onRating={onRating}/>
                     )}
                   </ListItem>
                 ))}

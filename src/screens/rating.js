@@ -31,6 +31,7 @@ export default function HoverRating(props) {
   return (
     <div className={classes.root}>
       <Rating
+	key={props.key}
         name="hover-feedback"
         value={value}
         precision={1}
