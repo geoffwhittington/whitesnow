@@ -19,6 +19,7 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import ScrollDialog from "./dialog";
+import HoverRating from "./rating";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -68,7 +69,7 @@ export default function Search(props){
       setFeedbackToken(e.target.value);
   }
 
-  function saveThumb(feedback, search, title, link) {
+  function onRating(feedback, search, title, link) {
     try {
         fetch(`https://v1.nocodeapi.com/cheezr/google_sheets/ItoBNEeneTgOWxgj/?api_key=${feedbackToken}&tabId=Sheet1`, {
             method: "post",
@@ -87,27 +88,6 @@ export default function Search(props){
   const handleClose = () => { 
       setDialogOpen(false);
   }
-  const ThumbUp = ((props) => {
-      return (
-          <IconButton 
-          onClick={() => {
-              saveThumb('up', props.search, props.title, props.url)
-          }}>
-          <ThumbUpIcon/>
-          </IconButton>
-      )
-  });
-
-  const ThumbDown = ((props) => {
-      return (
-          <IconButton
-          onClick={() => {
-               saveThumb('down', props.search, props.title, props.url)
-          }}>
-          <ThumbDownIcon/>
-          </IconButton>
-      )
-  });
 
   function searchContent() {
     fetch(
@@ -174,10 +154,7 @@ export default function Search(props){
                     </ListItemAvatar>
                     <ListItemText primary={<a href={`${item.url}`}>{item.title}</a>} />
                     { feedbackToken && (
-                        <>
-                        <ThumbUp search={searchText} title={item.title} url={item.url}/>
-                        <ThumbDown search={searchText} title={item.title} url={item.url}/>
-                        </>
+			<HoverRating key={`tr${item.id}`} search={searchText} title={item.title} url={item.url} onRating={onRating}/>
                     )}
                   </ListItem>                
                 ))}
@@ -192,16 +169,13 @@ export default function Search(props){
                  }
                  >
                 {howToResults.map((item) => (
-                  <ListItem style={{cursor: 'pointer'}} onClick={() => {setDialogOpen(true); setDialogText(item.text); setDialogTitle(item.title)}}>
+                  <ListItem style={{cursor: 'pointer'}}>
                     <ListItemAvatar>
                         <FormatAlignJustifyIcon />
                     </ListItemAvatar>
-                    <ListItemText primary={item.title}/>
+                    <ListItemText primary={item.title} onClick={() => {setDialogOpen(true); setDialogText(item.text); setDialogTitle(item.title)}} />
                     { feedbackToken && (
-                        <>
-                        <ThumbUp search={searchText} title={item.title} url={item.url}/>
-                        <ThumbDown search={searchText} title={item.title} url={item.url}/>
-                        </>
+			<HoverRating key={`howto${item.id}`} search={searchText} title={item.title} url={item.url} onRating={onRating}/>
                     )}
                   </ListItem>
                 ))}
