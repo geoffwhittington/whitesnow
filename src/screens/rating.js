@@ -22,23 +22,21 @@ const useStyles = makeStyles({
 export default function HoverRating(props) {
   const [value, setValue] = React.useState(1);
   const [hover, setHover] = React.useState(-1);
-  const [search,setSearch] = React.useState(props.search);
-  const [url,setUrl] = React.useState(props.url);
-  const [title,setTitle] = React.useState(props.title);
 
   const classes = useStyles();
-
+  
+  const onRatingChange = (e, v) => {
+    setValue(v);
+    props.onRating(v, props.search, props.title, props.url);
+  }
+  
   return (
     <div className={classes.root}>
       <Rating
-	key={props.key}
-        name="hover-feedback"
+	key={props.id}
         value={value}
         precision={1}
-        onChange={(event, newValue) => {
-          setValue(newValue);
-          props.onRating(newValue, search, title, url);
-        }}
+        onChange={onRatingChange}
         onChangeActive={(event, newHover) => {
           setHover(newHover);
         }}

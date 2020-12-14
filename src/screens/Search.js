@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import { useParams } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
@@ -20,6 +21,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import ScrollDialog from "./dialog";
 import HoverRating from "./rating";
+import Drawer from '@material-ui/core/Drawer';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,8 +37,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Search(props){
   const classes = useStyles();
+  let { q } = useParams();
 
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState(q);
   const [feedbackToken, setFeedbackToken] = useState("");
   const [apiToken, setApiToken] = useState("");
   const [serverName, setServerName] = useState("");
@@ -45,6 +49,7 @@ export default function Search(props){
   const [dialogText, setDialogText] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleOnSubmit = (e) => {
       setSearchText(searchText.trim())
@@ -101,7 +106,15 @@ export default function Search(props){
       }
     ).then(response => response.json())
      .then(data => {
-       setTrainingResults(data.results.training);
+       var training = [];
+       var i = 0;
+
+       for (i=0; i<data.results.training.length; i++){
+	   var t = data.results.training[i];
+	   t.url = t.url.replace("http://example.com", "https://cd.sdelements.com")
+           training.push(t);
+       }
+       setTrainingResults(training);
        setTaskResults(data.results.tasks);
        setHowToResults(data.results.howtos);
     })
@@ -109,15 +122,29 @@ export default function Search(props){
        console.log(error);
     });
   }
+    const toggleDrawer = (open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+
+    setDrawerOpen(open);
+   };
+
     return (
 	    <div className={classes.root}>
+
 	    <ScrollDialog title={dialogTitle} text={dialogText} open={dialogOpen} handleClose={handleClose}/>
+            <div style={{float:"right"}}>
+                <IconButton aria-label="configure" onClick={toggleDrawer(true)} component="span">
+                    <SettingsIcon />
+                </IconButton>
+            </div>
+	    <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
+	       <TextField label={"https://sde.example.com"} onChange={onServerChange} value={serverName} />
+               <TextField label={"Feedback token"} onChange={onFeedbackTokenChange} value={feedbackToken} />
+	       <TextField label={"API token"} onChange={onApiTokenChange} value={apiToken} />
+	    </Drawer>
             <Grid container spacing={3}>
-            <Grid item xs={12}>
-                <TextField label={"https://sde.example.com"} onChange={onServerChange} value={serverName} />
-                <TextField label={"Feedback token"} onChange={onFeedbackTokenChange} value={feedbackToken} />
-                <TextField label={"API token"} onChange={onApiTokenChange} value={apiToken} />
-            </Grid>
 
             <Grid item xs={12}>
                 <form id="myform" onSubmit = {handleOnSubmit} >
@@ -152,9 +179,9 @@ export default function Search(props){
                     <ListItemAvatar>
                         <PlayCircleOutlineIcon />
                     </ListItemAvatar>
-                    <ListItemText primary={<a href={`${item.url}`}>{item.title}</a>} />
+                    <ListItemText primary={<a target="_training" href={`${item.url}`}>{item.title}</a>} />
                     { feedbackToken && (
-			<HoverRating key={`tr${item.id}`} search={searchText} title={item.title} url={item.url} onRating={onRating}/>
+			<HoverRating key={`tr${item.id}`} id={`tr${item.id}`} search={searchText} title={item.title} url={item.url} onRating={onRating}/>
                     )}
                   </ListItem>                
                 ))}
@@ -175,7 +202,7 @@ export default function Search(props){
                     </ListItemAvatar>
                     <ListItemText primary={item.title} onClick={() => {setDialogOpen(true); setDialogText(item.text); setDialogTitle(item.title)}} />
                     { feedbackToken && (
-			<HoverRating key={`howtoRating${item.id}`} search={searchText} title={item.title} url={item.url} onRating={onRating}/>
+			<HoverRating id={`howtoRating${item.id}`} search={searchText} title={item.title} url={item.url} onRating={onRating}/>
                     )}
                   </ListItem>
                 ))}
