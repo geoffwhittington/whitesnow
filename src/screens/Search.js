@@ -43,6 +43,7 @@ export default function Search(props){
   const [feedbackToken, setFeedbackToken] = useState("");
   const [apiToken, setApiToken] = useState("");
   const [serverName, setServerName] = useState("");
+  const [trainingServer, setTrainingServer] = useState("https://cd.sdelements.com");
   const [trainingResults, setTrainingResults] = useState([]);
   const [taskResults, setTaskResults] = useState([]);
   const [howToResults, setHowToResults] = useState([]);
@@ -68,6 +69,10 @@ export default function Search(props){
 
   const onApiTokenChange = (e) => {
       setApiToken(e.target.value);
+  }
+
+  const onTrainingServerChange = (e) => {
+      setTrainingServer(e.target.value);
   }
 
   const onFeedbackTokenChange = (e) => {
@@ -111,7 +116,7 @@ export default function Search(props){
 
        for (i=0; i<data.results.training.length; i++){
 	   var t = data.results.training[i];
-	   t.url = t.url.replace("http://example.com", "https://cd.sdelements.com")
+	   t.url = t.url.replace("http://example.com", trainingServer)
            training.push(t);
        }
        setTrainingResults(training);
@@ -143,6 +148,7 @@ export default function Search(props){
 	       <TextField label={"https://sde.example.com"} onChange={onServerChange} value={serverName} />
                <TextField label={"Feedback token"} onChange={onFeedbackTokenChange} value={feedbackToken} />
 	       <TextField label={"API token"} onChange={onApiTokenChange} value={apiToken} />
+	       <TextField label={"Training Server"} onChange={onTrainingServerChange} value={trainingServer} />
 	    </Drawer>
             <Grid container spacing={3}>
 
