@@ -1,7 +1,6 @@
 import logo from './logo.svg';
 import {BrowserRouter as Router, Route} from "react-router-dom"
 import Search from "./screens/Search";
-import Index from "./screens/Index";
 
 import './App.css';
 
