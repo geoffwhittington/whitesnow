@@ -8,8 +8,7 @@ import './App.css';
 function App() {
   return (
      <Router basename={`${process.env.REACT_APP_DEPLOY_CONTEXT}`}>
-	  <Route path="/" exact component={Index} />
-	  <Route path="/Search/:q" exact component={Search} />
+	  <Route path="/:q" exact component={Search} />
      </Router>
   );
 }
