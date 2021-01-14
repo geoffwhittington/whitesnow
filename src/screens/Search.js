@@ -40,10 +40,10 @@ export default function Search(props){
   let { q } = useParams();
 
   const [searchText, setSearchText] = useState(q);
-  const [feedbackToken, setFeedbackToken] = useState("");
-  const [apiToken, setApiToken] = useState("");
-  const [serverName, setServerName] = useState("");
-  const [trainingServer, setTrainingServer] = useState("https://cd.sdelements.com");
+  const [feedbackToken, setFeedbackToken] = useState(window.localStorage.getItem('feedbackToken') || "");
+  const [apiToken, setApiToken] = useState(window.sessionStorage.getItem('at') || "");
+  const [serverName, setServerName] = useState(window.localStorage.getItem('serverName') || "");
+  const [trainingServer, setTrainingServer] = useState(window.localStorage.getItem('trainingServer') || 'https://cd.sdelements.com');
   const [trainingResults, setTrainingResults] = useState([]);
   const [taskResults, setTaskResults] = useState([]);
   const [howToResults, setHowToResults] = useState([]);
@@ -61,6 +61,7 @@ export default function Search(props){
 
   const onServerChange = (e) => {
       setServerName(e.target.value);
+      window.localStorage.setItem('serverName', e.target.value);
   }
 
   const onSearchChange = (e) => {
@@ -69,14 +70,17 @@ export default function Search(props){
 
   const onApiTokenChange = (e) => {
       setApiToken(e.target.value);
+      window.sessionStorage.setItem('at', e.target.value);
   }
 
   const onTrainingServerChange = (e) => {
       setTrainingServer(e.target.value);
+      window.localStorage('trainingServer', e.target.value);
   }
 
   const onFeedbackTokenChange = (e) => {
       setFeedbackToken(e.target.value);
+      window.localStorage('feedbackToken', e.target.value);
   }
 
   function onRating(feedback, search, title, link) {
@@ -116,8 +120,12 @@ export default function Search(props){
 
        for (i=0; i<data.results.training.length; i++){
 	   var t = data.results.training[i];
-	   t.url = t.url.replace(serverName, trainingServer)
-           training.push(t);
+
+	   let m = t.url.match('(http|https)://([^/]+)(/.+)$')
+	   if (m){
+	       t.url = trainingServer + m[3]
+               training.push(t);
+	   }
        }
        setTrainingResults(training);
        setTaskResults(data.results.tasks);
