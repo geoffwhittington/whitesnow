@@ -1,6 +1,6 @@
 {
   "name": "my-app",
-  "homepage": "https://geoffwhittington.github.io/whitesnow",
+  "homepage": ".",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -19,8 +19,8 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "PORT=3001 REACT_APP_DEPLOY_CONTEXT=/ react-scripts start",
-    "build": "rm -rf docs && REACT_APP_DEPLOY_CONTEXT=/whitesnow react-scripts build && mv build docs",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
