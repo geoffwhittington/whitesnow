@@ -116,7 +116,7 @@ export default function Search(props){
 
        for (i=0; i<data.results.training.length; i++){
 	   var t = data.results.training[i];
-	   t.url = t.url.replace("http://example.com", trainingServer)
+	   t.url = t.url.replace(serverName, trainingServer)
            training.push(t);
        }
        setTrainingResults(training);
