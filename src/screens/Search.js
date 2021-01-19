@@ -27,11 +27,13 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     textAlign: 'center',
     color: theme.palette.text.secondary,
+    width:400
   },
 }));
 
 export default function Search(props){
   const classes = useStyles();
+
   let { q } = useParams();
 
   const [searchText, setSearchText] = useState(q);
@@ -147,7 +149,7 @@ export default function Search(props){
                     <SettingsIcon />
                 </IconButton>
             </div>
-	    <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
+	    <Drawer classes={{paper: classes.paper}} anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
 	       <TextField label={"https://sde.example.com"} onChange={onServerChange} value={serverName} />
                <TextField label={"Feedback token"} onChange={onFeedbackTokenChange} value={feedbackToken} />
 	       <TextField label={"API token"} onChange={onApiTokenChange} value={apiToken} />
@@ -162,6 +164,7 @@ export default function Search(props){
                  value={searchText}
                  onChange={onSearchChange}
                  id="input-with-icon-textfield"
+	         autoComplete='off'
                  InputProps={{
                      startAdornment: (
                          <InputAdornment position="start">
