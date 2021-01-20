@@ -38,7 +38,7 @@ export default function Search(props){
 
   const [searchText, setSearchText] = useState(q);
   const [feedbackToken, setFeedbackToken] = useState(window.localStorage.getItem('feedbackToken') || "");
-  const [apiToken, setApiToken] = useState(window.sessionStorage.getItem('at') || "");
+  const [apiToken, setApiToken] = useState(window.sessionStorage.getItem('at') || window.localStorage.getItem('at'));
   const [serverName, setServerName] = useState(window.localStorage.getItem('serverName') || "");
   const [trainingServer, setTrainingServer] = useState(window.localStorage.getItem('trainingServer') || 'https://cd.sdelements.com');
   const [trainingResults, setTrainingResults] = useState([]);
