@@ -142,8 +142,9 @@ export default function Search(props){
 
     return (
 	    <div className={classes.root}>
-
-	    <ScrollDialog title={dialogTitle} text={dialogText} open={dialogOpen} handleClose={handleClose}/>
+	    <div style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
+          	    <ScrollDialog terms={searchText} title={dialogTitle} text={dialogText} open={dialogOpen} handleClose={handleClose}/>
+	    </div>
             <div style={{float:"right"}}>
                 <IconButton aria-label="configure" onClick={toggleDrawer(true)} component="span">
                     <SettingsIcon />
@@ -182,7 +183,7 @@ export default function Search(props){
                 <List
                  subheader={
                     <ListSubheader component="div" id="nested-list-subheader">
-                    Videos
+                    Training modules
                     </ListSubheader>
                  }
                  >
@@ -203,7 +204,7 @@ export default function Search(props){
                 <List
                  subheader={
                     <ListSubheader component="div" id="nested-list-subheader">
-                    How Tos
+                    Training articles
                     </ListSubheader>
                  }
                  >

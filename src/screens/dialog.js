@@ -1,4 +1,5 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -6,13 +7,31 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import ReactMarkdown from 'react-markdown'
+import CloseIcon from '@material-ui/icons/Close'
+import IconButton from '@material-ui/core/IconButton';
+import Chip from '@material-ui/core/Chip';
+
+const useStyles = makeStyles({
+  dialog: {
+      width: '942px',
+  },
+  markdown: {
+    '& pre': {
+       marginLeft: 12,
+       fontSize: '0.8em',
+       background: '#e0e0e0'
+    },
+    '& h2': {
+       fontSize: '1em'
+    },
+    '& p': {
+       fontSize: '0.8em'
+    }
+  },
+});
 
 export default function ScrollDialog(props) {
-  const [scroll, setScroll] = React.useState('paper');
-
-  const handleClickOpen = (scrollType) => () => {
-    setScroll(scrollType);
-  };
+  const classes = useStyles();
 
   const descriptionElementRef = React.useRef(null);
   React.useEffect(() => {
@@ -24,23 +43,55 @@ export default function ScrollDialog(props) {
     }
   }, []);
 
+  const SubTitle = (props) => {
+      let terms = [];
+
+      if (props.terms){
+          terms = props.terms.split(" ");
+      }
+
+      return (
+          <>
+	  {terms.map((term) => (
+	      <Chip size="small" label={term}/>
+	  ))}
+	  </>
+      )
+  }
+
   return (
-    <div>
       <Dialog
+        fullWidth={true}
+	maxWidth={'md'} 
         open={props.open}
         onClose={props.handleClose}
-        scroll={scroll}
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
+	className={classes.dialog}
       >
-        <DialogTitle id="scroll-dialog-title">{props.title}</DialogTitle>
-        <DialogContent dividers={scroll === 'paper'}>
+        <DialogTitle id="scroll-dialog-title">
+	  <span style={{float:'left'}}>
+	  {props.title}
+	  <div style={{marginTop: 4, fontSize:12}}>
+	  <strong>Read time</strong>: 5 mins
+	  </div>
+	  <div>
+	  <SubTitle terms={props.terms}/>
+          </div>
+	  </span>
+	  <span style={{float:'right'}}>
+	  <IconButton onClick={props.handleClose}>
+	    <CloseIcon />
+	  </IconButton>
+	  </span>
+	</DialogTitle>
+        <DialogContent>
           <DialogContentText
             id="scroll-dialog-description"
             ref={descriptionElementRef}
             tabIndex={-1}
           >
-            <ReactMarkdown>{props.text}</ReactMarkdown>
+            <ReactMarkdown className={classes.markdown}>{props.text}</ReactMarkdown>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -49,7 +100,6 @@ export default function ScrollDialog(props) {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
   );
 }
 
