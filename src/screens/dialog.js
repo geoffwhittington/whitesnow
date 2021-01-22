@@ -14,6 +14,10 @@ import Chip from '@material-ui/core/Chip';
 const useStyles = makeStyles({
   dialog: {
       width: '942px',
+      '& DialogTitle': {
+          borderBottom: 'solid',
+	  borderWidth: 1
+      }
   },
   markdown: {
     '& pre': {
@@ -21,8 +25,14 @@ const useStyles = makeStyles({
        fontSize: '0.8em',
        background: '#e0e0e0'
     },
+    '& code': {
+       background: '#e0e0e0'
+    },
     '& h2': {
        fontSize: '1em'
+    },
+    '& h3': {
+       fontSize: '1em',
     },
     '& p': {
        fontSize: '0.8em'
