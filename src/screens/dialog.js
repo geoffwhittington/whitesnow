@@ -13,7 +13,6 @@ import Chip from '@material-ui/core/Chip';
 
 const useStyles = makeStyles({
   dialog: {
-      width: '942px',
       '& DialogTitle': {
           borderBottom: 'solid',
 	  borderWidth: 1
