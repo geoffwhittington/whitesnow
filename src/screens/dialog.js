@@ -36,6 +36,9 @@ const useStyles = makeStyles({
     },
     '& p': {
        fontSize: '0.8em'
+    },
+    '& li': {
+       fontSize: '0.8em'
     }
   },
 });
