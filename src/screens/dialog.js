@@ -25,7 +25,8 @@ const useStyles = makeStyles({
        background: '#e0e0e0'
     },
     '& code': {
-       background: '#e0e0e0'
+       background: '#e0e0e0',
+       wordWrap: 'normal'
     },
     '& h2': {
        fontSize: '1em'
@@ -34,10 +35,10 @@ const useStyles = makeStyles({
        fontSize: '1em',
     },
     '& p': {
-       fontSize: '0.8em'
+       fontSize: 14
     },
     '& li': {
-       fontSize: '0.8em'
+       fontSize: 14
     }
   },
 });
