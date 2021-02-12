@@ -228,7 +228,7 @@ export default function Search(props){
                         <FormatAlignJustifyIcon />
                     </ListItemAvatar>
                     <ListItemText primary={item.title} onClick={() => {setDialogOpen(true); setDialogText(item.text); setDialogTitle(item.title)}} 
-		                  secondary={ <><strong>Read time</strong>: {item.readTime} mins</> }
+		                  secondary={ <><strong>Read time</strong>: {item.readTime} mins<div style={{paddingTop:10, width:'90%'}}> {item.text.substring(0,255)}</div></> }
 		    />
                     { feedbackToken && (
 			<HoverRating id={`howtoRating${item.id}`} search={searchText} title={item.title} url={item.url} onRating={onRating}/>
