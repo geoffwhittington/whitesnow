@@ -16,6 +16,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import ScrollDialog from "./dialog";
 import HoverRating from "./rating";
+import Rating from '@material-ui/lab/Rating'
 import Drawer from '@material-ui/core/Drawer';
 import SettingsIcon from '@material-ui/icons/Settings';
 
@@ -113,10 +114,17 @@ export default function Search(props){
     ).then(response => response.json())
      .then(data => {
        var training = [];
+       var howtos = [];
        var i = 0;
+       var watchingTraining =  Array.from({length: data.results.training.length}, () => Math.floor(Math.random() * 10) + 1)
+       var readTimes = Array.from({length: data.results.howtos.length}, () => Math.floor(Math.random() * 5) + 1)
+       var howtoRatings = Array.from({length: data.results.howtos.length}, () => Math.floor(Math.random() * 5) + 1);
+       howtoRatings.sort().reverse();
 
        for (i=0; i<data.results.training.length; i++){
 	   var t = data.results.training[i];
+
+           t.watchTime = watchingTraining[i]
 
 	   let m = t.url.match('(http|https)://([^/]+)(/.+)$')
 	   if (m){
@@ -124,6 +132,11 @@ export default function Search(props){
                training.push(t);
 	   }
        }
+       for (i=0; i<data.results.howtos.length; i++){
+           data.results.howtos[i].rating = howtoRatings[i];
+           data.results.howtos[i].readTime = readTimes[i];
+       }
+
        setTrainingResults(training);
        setTaskResults(data.results.tasks);
        setHowToResults(data.results.howtos);
@@ -192,7 +205,8 @@ export default function Search(props){
                     <ListItemAvatar>
                         <PlayCircleOutlineIcon />
                     </ListItemAvatar>
-                    <ListItemText primary={<a target="_training" href={`${item.url}`}>{item.title}</a>} />
+                    <ListItemText primary={<a target="_training" href={`${item.url}`}>{item.title}</a>} 
+			          secondary={ <><strong>Watch time</strong>: {item.watchTime} mins</> } />
                     { feedbackToken && (
 			<HoverRating key={`tr${item.id}`} id={`tr${item.id}`} search={searchText} title={item.title} url={item.url} onRating={onRating}/>
                     )}
@@ -213,10 +227,15 @@ export default function Search(props){
                     <ListItemAvatar>
                         <FormatAlignJustifyIcon />
                     </ListItemAvatar>
-                    <ListItemText primary={item.title} onClick={() => {setDialogOpen(true); setDialogText(item.text); setDialogTitle(item.title)}} />
+                    <ListItemText primary={item.title} onClick={() => {setDialogOpen(true); setDialogText(item.text); setDialogTitle(item.title)}} 
+		                  secondary={ <><strong>Read time</strong>: {item.readTime} mins</> }
+		    />
                     { feedbackToken && (
 			<HoverRating id={`howtoRating${item.id}`} search={searchText} title={item.title} url={item.url} onRating={onRating}/>
                     )}
+		    { !feedbackToken && (
+			<Rating value={item.rating}/>
+		    )}
                   </ListItem>
                 ))}
                 </List>
