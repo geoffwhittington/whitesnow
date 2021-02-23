@@ -11,7 +11,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
-import FormatAlignJustifyIcon from '@material-ui/icons/FormatAlignJustify';
+import CodeIcon from '@material-ui/icons/Code';
 import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import ScrollDialog from "./dialog";
@@ -118,8 +118,6 @@ export default function Search(props){
        var i = 0;
        var watchingTraining =  Array.from({length: data.results.training.length}, () => Math.floor(Math.random() * 10) + 1)
        var readTimes = Array.from({length: data.results.howtos.length}, () => Math.floor(Math.random() * 5) + 1)
-       var howtoRatings = Array.from({length: data.results.howtos.length}, () => Math.floor(Math.random() * 5) + 1);
-       howtoRatings.sort().reverse();
 
        for (i=0; i<data.results.training.length; i++){
 	   var t = data.results.training[i];
@@ -133,7 +131,6 @@ export default function Search(props){
 	   }
        }
        for (i=0; i<data.results.howtos.length; i++){
-           data.results.howtos[i].rating = howtoRatings[i];
            data.results.howtos[i].readTime = readTimes[i];
        }
 
@@ -210,6 +207,9 @@ export default function Search(props){
                     { feedbackToken && (
 			<HoverRating key={`tr${item.id}`} id={`tr${item.id}`} search={searchText} title={item.title} url={item.url} onRating={onRating}/>
                     )}
+		    { !feedbackToken && (
+			<Rating value={Math.floor(Math.random() * 5) + 1}/>
+                    )}
                   </ListItem>                
                 ))}
                 </List>
@@ -218,14 +218,14 @@ export default function Search(props){
                 <List
                  subheader={
                     <ListSubheader component="div" id="nested-list-subheader">
-                    Training articles
+                    Code examples
                     </ListSubheader>
                  }
                  >
                 {howToResults.map((item) => (
                   <ListItem key={`howtoItem${item.id}`} style={{cursor: 'pointer'}}>
                     <ListItemAvatar>
-                        <FormatAlignJustifyIcon />
+                        <CodeIcon />
                     </ListItemAvatar>
                     <ListItemText primary={item.title} onClick={() => {setDialogOpen(true); setDialogText(item.text); setDialogTitle(item.title)}} 
 		                  secondary={ <><strong>Read time</strong>: {item.readTime} mins<div style={{paddingTop:10, width:'90%'}}> {item.text.substring(0,255)}</div></> }
@@ -234,7 +234,7 @@ export default function Search(props){
 			<HoverRating id={`howtoRating${item.id}`} search={searchText} title={item.title} url={item.url} onRating={onRating}/>
                     )}
 		    { !feedbackToken && (
-			<Rating value={item.rating}/>
+			<Rating value={Math.floor(Math.random() * 5) + 1}/>
 		    )}
                   </ListItem>
                 ))}
